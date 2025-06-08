@@ -1,0 +1,130 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Quiz Interativo</title>
+  <style>
+    body {
+      font-family: 'Segoe UI', sans-serif;
+      background: #eef2f3;
+      padding: 20px;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+    }
+
+    .quiz-container {
+      background: white;
+      border-radius: 10px;
+      box-shadow: 0 4px 10px rgba(0,0,0,0.1);
+      padding: 30px;
+      width: 100%;
+      max-width: 500px;
+    }
+
+    h2 {
+      color: #333;
+    }
+
+    .question {
+      margin-bottom: 20px;
+    }
+
+    .answers button {
+      display: block;
+      width: 100%;
+      margin: 8px 0;
+      padding: 10px;
+      font-size: 16px;
+      background: #3498db;
+      color: white;
+      border: none;
+      border-radius: 8px;
+      cursor: pointer;
+    }
+
+    .answers button:hover {
+      background: #2980b9;
+    }
+
+    #result {
+      margin-top: 20px;
+      font-weight: bold;
+      font-size: 18px;
+    }
+  </style>
+</head>
+<body>
+
+  <div class="quiz-container">
+    <h2>Quiz de Cultura Geral</h2>
+    <div class="question" id="question">Carregando...</div>
+    <div class="answers" id="answers"></div>
+    <div id="result"></div>
+  </div>
+
+  <script>
+    const perguntas = [
+      {
+        pergunta: "Qual é a capital do Brasil?",
+        respostas: ["Rio de Janeiro", "Brasília", "São Paulo", "Belo Horizonte"],
+        correta: 1
+      },
+      {
+        pergunta: "Quem pintou a Mona Lisa?",
+        respostas: ["Michelangelo", "Leonardo da Vinci", "Van Gogh", "Picasso"],
+        correta: 1
+      },
+      {
+        pergunta: "Qual é o maior planeta do sistema solar?",
+        respostas: ["Terra", "Saturno", "Júpiter", "Marte"],
+        correta: 2
+      }
+    ];
+
+    let indiceAtual = 0;
+
+    function carregarPergunta() {
+      const q = perguntas[indiceAtual];
+      document.getElementById("question").textContent = q.pergunta;
+
+      const respostasEl = document.getElementById("answers");
+      respostasEl.innerHTML = "";
+
+      q.respostas.forEach((resposta, index) => {
+        const btn = document.createElement("button");
+        btn.textContent = resposta;
+        btn.onclick = () => verificarResposta(index);
+        respostasEl.appendChild(btn);
+      });
+
+      document.getElementById("result").textContent = "";
+    }
+
+    function verificarResposta(respostaSelecionada) {
+      const correta = perguntas[indiceAtual].correta;
+      const resultEl = document.getElementById("result");
+
+      if (respostaSelecionada === correta) {
+        resultEl.textContent = "✅ Resposta correta!";
+      } else {
+        resultEl.textContent = "❌ Resposta incorreta!";
+      }
+
+      indiceAtual++;
+      if (indiceAtual < perguntas.length) {
+        setTimeout(carregarPergunta, 1500);
+      } else {
+        setTimeout(() => {
+          document.getElementById("question").textContent = "Fim do quiz!";
+          document.getElementById("answers").innerHTML = "";
+        }, 2000);
+      }
+    }
+
+    carregarPergunta();
+  </script>
+
+</body>
+</html>
